@@ -34,6 +34,46 @@
         });
     });
 
+    /* ---------- Collapsible sidebar groups ---------- */
+    var navGroups = Array.prototype.slice.call(document.querySelectorAll('.nav-group'));
+    if (navGroups.length) {
+        var NAV_KEY = 'libraria-nav-group';
+        var savedGroup = '';
+        try { savedGroup = window.localStorage.getItem(NAV_KEY) || ''; } catch (e) {}
+
+        var activeGroup = null;
+        navGroups.forEach(function (group) {
+            if (group.querySelector('.nav-list a.active')) {
+                activeGroup = group;
+                group.classList.add('has-active');
+            }
+        });
+
+        var current = activeGroup
+            || navGroups.filter(function (g) { return g.getAttribute('data-group') === savedGroup; })[0]
+            || navGroups[0];
+
+        function setOpen(group, open) {
+            group.classList.toggle('open', open);
+            var btn = group.querySelector('.nav-group-toggle');
+            if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        }
+
+        navGroups.forEach(function (group) { setOpen(group, group === current); });
+
+        navGroups.forEach(function (group) {
+            var btn = group.querySelector('.nav-group-toggle');
+            if (!btn) return;
+            btn.addEventListener('click', function () {
+                var willOpen = !group.classList.contains('open');
+                navGroups.forEach(function (other) { setOpen(other, willOpen && other === group); });
+                try {
+                    window.localStorage.setItem(NAV_KEY, willOpen ? group.getAttribute('data-group') : '');
+                } catch (e) {}
+            });
+        });
+    }
+
     /* ---------- Live clock (Asia/Jakarta) ---------- */
     var clock = document.getElementById('adminClock');
     if (clock) {

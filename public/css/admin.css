@@ -151,6 +151,52 @@
   animation: pulse-dot 2.2s ease-in-out infinite;
 }
 
+/* Collapsible navigation groups */
+.admin-page .sidebar-scroll { padding: 10px 10px 18px; }
+.nav-group { margin-bottom: 5px; }
+.nav-group-toggle {
+  width: 100%; display: flex; align-items: center; gap: 10px;
+  min-height: 42px; padding: 8px 11px; border-radius: 12px;
+  border: 1px solid transparent; background: transparent;
+  color: var(--brand-800); font-size: 12.5px; font-weight: 760; text-align: left;
+  transition: background .18s, border-color .18s, color .18s;
+}
+.nav-group-toggle:hover { background: var(--brand-50); color: var(--brand-700); }
+.nav-group-toggle .ng-ico {
+  width: 26px; height: 26px; border-radius: 8px; flex: none;
+  display: grid; place-items: center; background: var(--brand-50); color: var(--brand-600);
+  transition: background .18s, color .18s;
+}
+.nav-group-toggle .chev {
+  margin-left: auto; color: var(--faint);
+  transition: transform .25s var(--ease), color .18s;
+}
+.nav-group.open > .nav-group-toggle {
+  background: var(--gradient-brand-soft);
+  border-color: var(--brand-200);
+}
+.nav-group.open > .nav-group-toggle .ng-ico {
+  background: #fff; color: var(--brand-700);
+  box-shadow: 0 2px 7px rgba(var(--glow-rgb), .13);
+}
+.nav-group.open > .nav-group-toggle .chev { transform: rotate(90deg); color: var(--brand-600); }
+.nav-group.has-active > .nav-group-toggle .ng-ico { background: var(--brand-500); color: #fff; }
+.nav-group-items {
+  max-height: 0; overflow: hidden; opacity: 0;
+  margin: 0 0 0 23px; padding: 0 0 0 10px;
+  border-left: 1px solid var(--stroke);
+  transition: max-height .3s var(--ease), opacity .2s ease, padding .3s var(--ease);
+}
+.nav-group.open .nav-group-items { max-height: 430px; opacity: 1; padding: 5px 0 7px 10px; }
+.nav-group-items a { min-height: 34px; padding: 7px 10px; font-size: 12px; border-radius: 9px; }
+.nav-group-items a:hover { transform: translateX(2px); }
+.nav-group-items a.active {
+  border: 0;
+  background: var(--brand-100);
+  box-shadow: inset 2px 0 0 var(--brand-500);
+}
+.nav-group-items a.active::after { width: 5px; height: 5px; }
+
 /* ---------------- Topbar ---------------- */
 .admin-page .topbar {
   background: var(--glass);
@@ -159,7 +205,6 @@
 }
 .admin-page .page-title { font-size: 16px; font-weight: 800; letter-spacing: -.25px; }
 .admin-page .page-subtitle { font-size: 11px; }
-.admin-page .topbar-search { min-width: 235px; background: var(--line-2); }
 .admin-page .topbar-chip { background: var(--brand-50); color: var(--brand-700); }
 .clock-chip {
   display: inline-flex; align-items: center; gap: 7px; white-space: nowrap;
@@ -544,8 +589,7 @@
   .hero-panel,
   .theme-switch,
   .clock-chip,
-  .notification-wrap,
-  .topbar-search { display: none !important; }
+  .notification-wrap { display: none !important; }
   .admin-page .panel,
   .admin-page .stat-card-v2 { box-shadow: none !important; animation: none !important; }
 }

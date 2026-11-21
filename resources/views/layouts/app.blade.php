@@ -33,50 +33,93 @@
 
     <div class="sidebar-scroll">
         @if(auth()->user()->isAdmin())
-            <div class="sidebar-label">Menu Utama</div>
-            <ul class="nav-list">
-                <li><a href="{{ route('dashboard') }}" class="{{ active_menu('dashboard') }}">{!! icon('layout-dashboard') !!} Dashboard</a></li>
-                <li><a href="{{ route('books.index') }}" class="{{ active_menu('books', 'books/*') }}">{!! icon('book-open') !!} Data Buku</a></li>
-                <li><a href="{{ route('catalog.index') }}" class="{{ active_menu('catalog', 'catalog/*') }}">{!! icon('library') !!} Katalog</a></li>
-            </ul>
-            <div class="sidebar-label">Master Data</div>
-            <ul class="nav-list">
-                <li><a href="{{ route('lookups.index', 'categories') }}" class="{{ request()->is('lookups/categories*') ? 'active' : '' }}">{!! icon('tags') !!} Kategori</a></li>
-                <li><a href="{{ route('lookups.index', 'authors') }}" class="{{ request()->is('lookups/authors*') ? 'active' : '' }}">{!! icon('pen-line') !!} Penulis</a></li>
-                <li><a href="{{ route('lookups.index', 'publishers') }}" class="{{ request()->is('lookups/publishers*') ? 'active' : '' }}">{!! icon('building-2') !!} Penerbit</a></li>
-                <li><a href="{{ route('lookups.index', 'shelves') }}" class="{{ request()->is('lookups/shelves*') ? 'active' : '' }}">{!! icon('archive') !!} Rak Buku</a></li>
-            </ul>
-            <div class="sidebar-label">Monitoring & Laporan</div>
-            <ul class="nav-list">
-                <li><a href="{{ route('members.index') }}" class="{{ active_menu('members', 'members/*') }}">{!! icon('users') !!} Data Anggota</a></li>
-                <li><a href="{{ route('monitoring.index') }}" class="{{ active_menu('monitoring', 'monitoring/*') }}">{!! icon('user-check') !!} Monitoring Petugas</a></li>
-                <li><a href="{{ route('loans.index') }}" class="{{ request()->is('loans*') && !request()->is('loans/create') ? 'active' : '' }}">{!! icon('history') !!} Riwayat Peminjaman</a></li>
-                <li><a href="{{ route('returns.index') }}" class="{{ active_menu('returns*') }}">{!! icon('rotate-ccw') !!} Riwayat Pengembalian</a></li>
-                <li><a href="{{ route('fines.index') }}" class="{{ active_menu('fines*') }}">{!! icon('banknote') !!} Monitoring Denda</a></li>
-                <li><a href="{{ route('logs.index') }}" class="{{ active_menu('logs') }}">{!! icon('scroll-text') !!} Log Aktivitas</a></li>
-                <li><a href="{{ route('reports.index') }}" class="{{ active_menu('reports*') }}">{!! icon('chart-no-axes-combined') !!} Laporan</a></li>
-            </ul>
-            <div class="sidebar-label">Sistem</div>
-            <ul class="nav-list">
-                <li><a href="{{ route('accounts.index') }}" class="{{ active_menu('accounts*') }}">{!! icon('user-cog') !!} Manajemen Akun</a></li>
-                <li><a href="{{ route('settings.index') }}" class="{{ active_menu('settings') }}">{!! icon('settings') !!} Pengaturan</a></li>
-                <li><a href="{{ route('backup.index') }}" class="{{ active_menu('backup*') }}">{!! icon('database-backup') !!} Backup Database</a></li>
-            </ul>
+            <div class="nav-group" data-group="utama">
+                <button type="button" class="nav-group-toggle" aria-expanded="false">
+                    <span class="ng-ico">{!! icon('layout-dashboard', 16) !!}</span><span>Menu Utama</span>
+                    {!! icon('chevron-right', 14, 'chev') !!}
+                </button>
+                <ul class="nav-list nav-group-items">
+                    <li><a href="{{ route('dashboard') }}" class="{{ active_menu('dashboard') }}">{!! icon('house', 16) !!} Dashboard</a></li>
+                    <li><a href="{{ route('catalog.index') }}" class="{{ active_menu('catalog', 'catalog/*') }}">{!! icon('library', 16) !!} Katalog Buku</a></li>
+                    <li><a href="{{ route('books.index') }}" class="{{ active_menu('books', 'books/*') }}">{!! icon('book-open', 16) !!} Data Buku</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-group" data-group="master">
+                <button type="button" class="nav-group-toggle" aria-expanded="false">
+                    <span class="ng-ico">{!! icon('tags', 16) !!}</span><span>Master Data</span>
+                    {!! icon('chevron-right', 14, 'chev') !!}
+                </button>
+                <ul class="nav-list nav-group-items">
+                    <li><a href="{{ route('lookups.index', 'categories') }}" class="{{ request()->is('lookups/categories*') ? 'active' : '' }}">{!! icon('tags', 16) !!} Kategori</a></li>
+                    <li><a href="{{ route('lookups.index', 'authors') }}" class="{{ request()->is('lookups/authors*') ? 'active' : '' }}">{!! icon('pen-line', 16) !!} Penulis</a></li>
+                    <li><a href="{{ route('lookups.index', 'publishers') }}" class="{{ request()->is('lookups/publishers*') ? 'active' : '' }}">{!! icon('building-2', 16) !!} Penerbit</a></li>
+                    <li><a href="{{ route('lookups.index', 'shelves') }}" class="{{ request()->is('lookups/shelves*') ? 'active' : '' }}">{!! icon('archive', 16) !!} Rak Buku</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-group" data-group="operasional">
+                <button type="button" class="nav-group-toggle" aria-expanded="false">
+                    <span class="ng-ico">{!! icon('book-marked', 16) !!}</span><span>Operasional</span>
+                    {!! icon('chevron-right', 14, 'chev') !!}
+                </button>
+                <ul class="nav-list nav-group-items">
+                    <li><a href="{{ route('members.index') }}" class="{{ active_menu('members', 'members/*') }}">{!! icon('users', 16) !!} Data Anggota</a></li>
+                    <li><a href="{{ route('loans.index') }}" class="{{ request()->is('loans*') && !request()->is('loans/create') ? 'active' : '' }}">{!! icon('history', 16) !!} Riwayat Peminjaman</a></li>
+                    <li><a href="{{ route('returns.index') }}" class="{{ active_menu('returns*') }}">{!! icon('rotate-ccw', 16) !!} Riwayat Pengembalian</a></li>
+                    <li><a href="{{ route('fines.index') }}" class="{{ active_menu('fines*') }}">{!! icon('banknote', 16) !!} Monitoring Denda</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-group" data-group="analitik">
+                <button type="button" class="nav-group-toggle" aria-expanded="false">
+                    <span class="ng-ico">{!! icon('chart-no-axes-combined', 16) !!}</span><span>Monitoring & Laporan</span>
+                    {!! icon('chevron-right', 14, 'chev') !!}
+                </button>
+                <ul class="nav-list nav-group-items">
+                    <li><a href="{{ route('monitoring.index') }}" class="{{ active_menu('monitoring', 'monitoring/*') }}">{!! icon('user-check', 16) !!} Monitoring Petugas</a></li>
+                    <li><a href="{{ route('logs.index') }}" class="{{ active_menu('logs') }}">{!! icon('scroll-text', 16) !!} Log Aktivitas</a></li>
+                    <li><a href="{{ route('reports.index') }}" class="{{ active_menu('reports*') }}">{!! icon('file-chart-column', 16) !!} Laporan</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-group" data-group="sistem">
+                <button type="button" class="nav-group-toggle" aria-expanded="false">
+                    <span class="ng-ico">{!! icon('settings', 16) !!}</span><span>Sistem</span>
+                    {!! icon('chevron-right', 14, 'chev') !!}
+                </button>
+                <ul class="nav-list nav-group-items">
+                    <li><a href="{{ route('accounts.index') }}" class="{{ active_menu('accounts*') }}">{!! icon('user-cog', 16) !!} Manajemen Akun</a></li>
+                    <li><a href="{{ route('settings.index') }}" class="{{ active_menu('settings') }}">{!! icon('settings', 16) !!} Pengaturan</a></li>
+                    <li><a href="{{ route('backup.index') }}" class="{{ active_menu('backup*') }}">{!! icon('database-backup', 16) !!} Backup Database</a></li>
+                </ul>
+            </div>
         @else
-            <div class="sidebar-label">Menu Operasional</div>
-            <ul class="nav-list">
-                <li><a href="{{ route('dashboard') }}" class="{{ active_menu('dashboard') }}">{!! icon('layout-dashboard') !!} Dashboard</a></li>
-                <li><a href="{{ route('members.index') }}" class="{{ active_menu('members', 'members/*') }}">{!! icon('users') !!} Data Anggota</a></li>
-                <li><a href="{{ route('loans.create') }}" class="{{ request()->is('loans/create') ? 'active' : '' }}">{!! icon('book-marked') !!} Peminjaman</a></li>
-                <li><a href="{{ route('returns.create') }}" class="{{ request()->is('returns/create') ? 'active' : '' }}">{!! icon('rotate-ccw') !!} Pengembalian</a></li>
-                <li><a href="{{ route('fines.index') }}" class="{{ active_menu('fines*') }}">{!! icon('banknote') !!} Data Denda</a></li>
-                <li><a href="{{ route('transactions.index') }}" class="{{ active_menu('transactions') }}">{!! icon('history') !!} Riwayat Transaksi</a></li>
-            </ul>
-            <div class="sidebar-label">Katalog</div>
-            <ul class="nav-list">
-                <li><a href="{{ route('catalog.index') }}" class="{{ active_menu('catalog', 'catalog/*') }}">{!! icon('library') !!} Katalog Buku</a></li>
-                <li><a href="{{ route('profile.index') }}" class="{{ active_menu('profil') }}">{!! icon('circle-user') !!} Profil</a></li>
-            </ul>
+            <div class="nav-group" data-group="operasional">
+                <button type="button" class="nav-group-toggle" aria-expanded="false">
+                    <span class="ng-ico">{!! icon('book-marked', 16) !!}</span><span>Operasional</span>
+                    {!! icon('chevron-right', 14, 'chev') !!}
+                </button>
+                <ul class="nav-list nav-group-items">
+                    <li><a href="{{ route('dashboard') }}" class="{{ active_menu('dashboard') }}">{!! icon('house', 16) !!} Dashboard</a></li>
+                    <li><a href="{{ route('members.index') }}" class="{{ active_menu('members', 'members/*') }}">{!! icon('users', 16) !!} Data Anggota</a></li>
+                    <li><a href="{{ route('loans.create') }}" class="{{ request()->is('loans/create') ? 'active' : '' }}">{!! icon('book-marked', 16) !!} Peminjaman</a></li>
+                    <li><a href="{{ route('returns.create') }}" class="{{ request()->is('returns/create') ? 'active' : '' }}">{!! icon('rotate-ccw', 16) !!} Pengembalian</a></li>
+                    <li><a href="{{ route('fines.index') }}" class="{{ active_menu('fines*') }}">{!! icon('banknote', 16) !!} Data Denda</a></li>
+                    <li><a href="{{ route('transactions.index') }}" class="{{ active_menu('transactions') }}">{!! icon('history', 16) !!} Riwayat Transaksi</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-group" data-group="katalog">
+                <button type="button" class="nav-group-toggle" aria-expanded="false">
+                    <span class="ng-ico">{!! icon('library', 16) !!}</span><span>Katalog & Profil</span>
+                    {!! icon('chevron-right', 14, 'chev') !!}
+                </button>
+                <ul class="nav-list nav-group-items">
+                    <li><a href="{{ route('catalog.index') }}" class="{{ active_menu('catalog', 'catalog/*') }}">{!! icon('library', 16) !!} Katalog Buku</a></li>
+                    <li><a href="{{ route('profile.index') }}" class="{{ active_menu('profil') }}">{!! icon('circle-user', 16) !!} Profil Saya</a></li>
+                </ul>
+            </div>
         @endif
     </div>
 
@@ -99,10 +142,6 @@
             </div>
         </div>
         <div class="topbar-right">
-            <form action="{{ route('catalog.index') }}" method="GET" class="topbar-search d-none d-lg-flex" role="search">
-                <input type="search" name="q" value="{{ request('q') }}" placeholder="Cari buku, ISBN, penulis..." aria-label="Cari buku">
-                <button type="submit" aria-label="Cari">{!! icon('search', 15) !!}</button>
-            </form>
             <span class="topbar-chip d-none d-xl-inline-flex">{!! icon('calendar-days', 15) !!} {{ tanggal(now()) }}</span>
             <span class="clock-chip d-none d-lg-inline-flex" id="adminClock">{!! icon('clock', 15) !!} <span>--:--:--</span></span>
 
