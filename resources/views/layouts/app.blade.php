@@ -41,20 +41,18 @@
                 <ul class="nav-list nav-group-items">
                     <li><a href="{{ route('dashboard') }}" class="{{ active_menu('dashboard') }}">{!! icon('house', 16) !!} Dashboard</a></li>
                     <li><a href="{{ route('catalog.index') }}" class="{{ active_menu('catalog', 'catalog/*') }}">{!! icon('library', 16) !!} Katalog Buku</a></li>
-                    <li><a href="{{ route('books.index') }}" class="{{ active_menu('books', 'books/*') }}">{!! icon('book-open', 16) !!} Data Buku</a></li>
                 </ul>
             </div>
 
             <div class="nav-group" data-group="master">
                 <button type="button" class="nav-group-toggle" aria-expanded="false">
-                    <span class="ng-ico">{!! icon('tags', 16) !!}</span><span>Master Data</span>
+                    <span class="ng-ico">{!! icon('book-open', 16) !!}</span><span>Master Data</span>
                     {!! icon('chevron-right', 14, 'chev') !!}
                 </button>
                 <ul class="nav-list nav-group-items">
-                    <li><a href="{{ route('lookups.index', 'categories') }}" class="{{ request()->is('lookups/categories*') ? 'active' : '' }}">{!! icon('tags', 16) !!} Kategori</a></li>
+                    <li><a href="{{ route('books.index') }}" class="{{ active_menu('books', 'books/*') }}">{!! icon('book-open', 16) !!} Nama Buku</a></li>
+                    <li><a href="{{ route('lookups.index', 'categories') }}" class="{{ request()->is('lookups/categories*') ? 'active' : '' }}">{!! icon('library', 16) !!} Katalog</a></li>
                     <li><a href="{{ route('lookups.index', 'authors') }}" class="{{ request()->is('lookups/authors*') ? 'active' : '' }}">{!! icon('pen-line', 16) !!} Penulis</a></li>
-                    <li><a href="{{ route('lookups.index', 'publishers') }}" class="{{ request()->is('lookups/publishers*') ? 'active' : '' }}">{!! icon('building-2', 16) !!} Penerbit</a></li>
-                    <li><a href="{{ route('lookups.index', 'shelves') }}" class="{{ request()->is('lookups/shelves*') ? 'active' : '' }}">{!! icon('archive', 16) !!} Rak Buku</a></li>
                 </ul>
             </div>
 

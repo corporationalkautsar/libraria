@@ -63,13 +63,13 @@
 
 <h2>1. Laporan Buku</h2>
 <p>Total {{ $buku['titles'] }} judul, {{ $buku['copies'] }} eksemplar, {{ $buku['available'] }} tersedia, {{ $buku['borrowed'] }} dipinjam, {{ $buku['out_of_stock'] }} stok habis, {{ $buku['inactive'] }} tidak aktif.</p>
-<h3>Buku per Kategori</h3>
+<h3>Buku per Katalog</h3>
 <table>
-    <thead><tr><th>Kategori</th><th class="num">Judul</th><th class="num">Eksemplar</th><th class="num">Tersedia</th></tr></thead>
+    <thead><tr><th>Katalog</th><th class="num">Judul</th><th class="num">Eksemplar</th><th class="num">Tersedia</th></tr></thead>
     <tbody>
         @forelse($buku['per_category'] as $item)
         <tr><td>{{ $item->name }}</td><td class="num">{{ (int) $item->books_count }}</td><td class="num">{{ (int) $item->total_stock }}</td><td class="num">{{ (int) $item->total_available }}</td></tr>
-        @empty<tr><td colspan="4" class="empty">Belum ada data kategori.</td></tr>@endforelse
+        @empty<tr><td colspan="4" class="empty">Belum ada data katalog.</td></tr>@endforelse
     </tbody>
 </table>
 <h3>Buku per Penerbit</h3>

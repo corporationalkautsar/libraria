@@ -39,24 +39,12 @@
                         <div class="cell-primary">{{ $book->publisher?->name ?? '-' }}</div>
                     </div>
                     <div class="col-md-6">
-                        <div class="cell-secondary">Kategori</div>
+                        <div class="cell-secondary">Katalog</div>
                         <div class="cell-primary">{{ $book->category?->name ?? '-' }}</div>
                     </div>
                     <div class="col-md-6">
                         <div class="cell-secondary">Tahun Terbit</div>
                         <div class="cell-primary">{{ $book->year }}</div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="cell-secondary">Rak Buku</div>
-                        <div class="cell-primary">{{ $book->shelf?->code ?? '-' }} — {{ $book->shelf?->name ?? '-' }}</div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="cell-secondary">Nomor Rak</div>
-                        <div class="cell-primary">{{ $book->shelf_number ?: '-' }}</div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="cell-secondary">Lokasi Rak</div>
-                        <div class="cell-primary">{{ $book->shelf?->location ?: '-' }}</div>
                     </div>
                     <div class="col-md-6">
                         <div class="cell-secondary">Ditambahkan</div>

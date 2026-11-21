@@ -12,7 +12,6 @@ use App\Models\LoanDetail;
 use App\Models\Member;
 use App\Models\Publisher;
 use App\Models\Setting;
-use App\Models\Shelf;
 use App\Models\User;
 use App\Support\Settings;
 use Illuminate\Database\Seeder;
@@ -41,21 +40,13 @@ class DatabaseSeeder extends Seeder
         }
 
         $categories = collect(['Fiksi', 'Non-Fiksi', 'Pendidikan', 'Sains', 'Sejarah', 'Agama', 'Teknologi', 'Bahasa'])
-            ->map(fn ($name) => Category::create(['name' => $name, 'description' => 'Kategori '.$name]));
+            ->map(fn ($name) => Category::create(['name' => $name, 'description' => 'Katalog '.$name]));
 
         $authors = collect(['Ahmad Fauzi', 'Siti Aisyah', 'M. Khalil', 'Dewi Lestari', 'Rizky Pratama', 'Nur Hasanah', 'Andi Saputra', 'Fatmawati'])
             ->map(fn ($name) => Author::create(['name' => $name]));
 
         $publishers = collect(['Pustaka Jaya', 'Gramedia', 'Erlangga', 'Mizan', 'Bentang Pustaka', 'Balai Pustaka'])
             ->map(fn ($name) => Publisher::create(['name' => $name]));
-
-        $shelves = collect([
-            ['code' => 'RK-01', 'name' => 'Rak A', 'location' => 'Lantai 1'],
-            ['code' => 'RK-02', 'name' => 'Rak B', 'location' => 'Lantai 1'],
-            ['code' => 'RK-03', 'name' => 'Rak C', 'location' => 'Lantai 2'],
-            ['code' => 'RK-04', 'name' => 'Rak D', 'location' => 'Lantai 2'],
-            ['code' => 'RK-05', 'name' => 'Rak E', 'location' => 'Lantai 2'],
-        ])->map(fn ($data) => Shelf::create($data));
 
         $titles = [
             'Laskar Pelangi', 'Negeri 5 Menara', 'Ayat-Ayat Cinta', 'Bumi Manusia',
@@ -65,15 +56,13 @@ class DatabaseSeeder extends Seeder
             'Tata Bahasa Indonesia', 'Kamus Besar Bahasa Indonesia', 'Ekonomi Mikro', 'Geografi Umum',
         ];
 
-        $books = collect($titles)->map(function (string $title, int $i) use ($categories, $authors, $publishers, $shelves) {
+        $books = collect($titles)->map(function (string $title, int $i) use ($categories, $authors, $publishers) {
             return Book::create([
                 'isbn' => '978-602-'.str_pad((string) (10000 + $i), 6, '0', STR_PAD_LEFT).'-'.$i,
                 'title' => $title,
                 'author_id' => $authors[$i % $authors->count()]->id,
                 'publisher_id' => $publishers[$i % $publishers->count()]->id,
                 'category_id' => $categories[$i % $categories->count()]->id,
-                'shelf_id' => $shelves[$i % $shelves->count()]->id,
-                'shelf_number' => 'A'.($i + 1),
                 'year' => 2015 + ($i % 10),
                 'stock' => 4 + ($i % 3),
                 'available' => 4 + ($i % 3),

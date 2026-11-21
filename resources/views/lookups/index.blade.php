@@ -6,10 +6,9 @@
 <x-page-head title="Data {{ $title }}" subtitle="Tambah, ubah, dan hapus data master {{ strtolower($title) }}." />
 
 <div class="row g-3 mb-3">
-    <div class="col-6 col-md-3"><x-stat-card label="Kategori" :value="$counts['categories']" icon="tags" tone="{{ $type === 'categories' ? 'teal' : 'slate' }}" foot="Master kategori" /></div>
-    <div class="col-6 col-md-3"><x-stat-card label="Penulis" :value="$counts['authors']" icon="pen-line" tone="{{ $type === 'authors' ? 'teal' : 'slate' }}" foot="Master penulis" /></div>
-    <div class="col-6 col-md-3"><x-stat-card label="Penerbit" :value="$counts['publishers']" icon="building-2" tone="{{ $type === 'publishers' ? 'teal' : 'slate' }}" foot="Master penerbit" /></div>
-    <div class="col-6 col-md-3"><x-stat-card label="Rak Buku" :value="$counts['shelves']" icon="archive" tone="{{ $type === 'shelves' ? 'teal' : 'slate' }}" foot="Master rak buku" /></div>
+    @foreach($types as $key => $meta)
+        <div class="col-6 col-lg-4"><x-stat-card label="{{ $meta['title'] }}" :value="$counts[$key]" icon="{{ $meta['icon'] }}" tone="{{ $type === $key ? 'teal' : 'slate' }}" foot="Master {{ strtolower($meta['title']) }}" /></div>
+    @endforeach
 </div>
 
 <div class="card-soft mb-3">
@@ -18,34 +17,16 @@
         <form method="POST" action="{{ route('lookups.store', $type) }}">
             @csrf
             <div class="row g-2 align-items-end">
-                @if($type === 'shelves')
-                <div class="col-md-2">
-                    <label for="code" class="form-label">Kode Rak</label>
-                    <input id="code" type="text" name="code" class="form-control @error('code') is-invalid @enderror" value="{{ old('code') }}" placeholder="Contoh: R01" required>
-                    @error('code')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
-                <div class="col-md-3">
-                    <label for="name" class="form-label">Nama Rak</label>
-                    <input id="name" type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" placeholder="Contoh: Rak A" required>
-                    @error('name')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
                 <div class="col-md-4">
-                    <label for="location" class="form-label">Lokasi</label>
-                    <input id="location" type="text" name="location" class="form-control @error('location') is-invalid @enderror" value="{{ old('location') }}" placeholder="Contoh: Lantai 2, sayap barat">
-                    @error('location')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
-                @else
-                <div class="col-md-5">
                     <label for="name" class="form-label">{{ $config['label'] }}</label>
-                    <input id="name" type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" placeholder="Masukkan {{ strtolower($config['label']) }}" required>
+                    <input id="name" type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" placeholder="{{ $config['hint'] }}" required>
                     @error('name')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <label for="description" class="form-label">Deskripsi</label>
                     <input id="description" type="text" name="description" class="form-control @error('description') is-invalid @enderror" value="{{ old('description') }}" placeholder="Opsional">
                     @error('description')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
-                @endif
                 <div class="col-md-2">
                     <button type="submit" class="btn btn-teal w-100">{!! icon('plus', 16) !!} Tambah</button>
                 </div>
@@ -58,7 +39,7 @@
     <div class="row g-2 align-items-end">
         <div class="col-md-10">
             <label for="q">Cari Data</label>
-            <input id="q" type="text" name="q" class="form-control" placeholder="Cari berdasarkan {{ $type === 'shelves' ? 'kode, nama, atau lokasi' : 'nama atau deskripsi' }}" value="{{ request('q') }}">
+            <input id="q" type="text" name="q" class="form-control" placeholder="Cari berdasarkan nama atau deskripsi" value="{{ request('q') }}">
         </div>
         <div class="col-md-2 filter-actions">
             <button type="submit" class="btn btn-teal btn-sm w-100">{!! icon('search', 15) !!} Cari</button>
@@ -77,14 +58,8 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    @if($type === 'shelves')
-                        <th>Kode Rak</th>
-                        <th>Nama Rak</th>
-                        <th>Lokasi</th>
-                    @else
-                        <th>Nama</th>
-                        <th>Deskripsi</th>
-                    @endif
+                    <th>Nama</th>
+                    <th>Deskripsi</th>
                     <th>Jumlah Buku</th>
                     <th class="text-center">Aksi</th>
                 </tr>
@@ -93,14 +68,8 @@
                 @forelse($records as $record)
                 <tr>
                     <td class="cell-secondary">{{ $records->firstItem() + $loop->index }}</td>
-                    @if($type === 'shelves')
-                        <td class="cell-primary">{{ $record->code }}</td>
-                        <td>{{ $record->name }}</td>
-                        <td>{{ $record->location ?: '-' }}</td>
-                    @else
-                        <td class="cell-primary">{{ $record->name }}</td>
-                        <td>{{ $record->description ?: '-' }}</td>
-                    @endif
+                    <td class="cell-primary">{{ $record->name }}</td>
+                    <td>{{ $record->description ?: '-' }}</td>
                     <td><span class="badge badge-primary">{{ $record->books()->count() }}</span></td>
                     <td>
                         <div class="d-flex gap-1 justify-content-center">
@@ -113,7 +82,7 @@
                     </td>
                 </tr>
                 @empty
-                <tr><td colspan="{{ $type === 'shelves' ? 6 : 5 }}" class="table-empty">Belum ada data {{ strtolower($title) }}.</td></tr>
+                <tr><td colspan="5" class="table-empty">Belum ada data {{ strtolower($title) }}.</td></tr>
                 @endforelse
             </tbody>
         </table>
@@ -135,31 +104,16 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                 </div>
                 <div class="modal-body">
-                    @if($type === 'shelves')
                     <div class="mb-3">
-                        <label for="code_{{ $record->id }}" class="form-label">Kode Rak</label>
-                        <input id="code_{{ $record->id }}" type="text" name="code" class="form-control @error('code') is-invalid @enderror" value="{{ old('code', $record->code) }}" required>
-                        @error('code')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                    </div>
-                    @endif
-                    <div class="mb-3">
-                        <label for="name_{{ $record->id }}" class="form-label">{{ $type === 'shelves' ? 'Nama Rak' : $config['label'] }}</label>
+                        <label for="name_{{ $record->id }}" class="form-label">{{ $config['label'] }}</label>
                         <input id="name_{{ $record->id }}" type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $record->name) }}" required>
                         @error('name')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
-                    @if($type === 'shelves')
-                    <div class="mb-3">
-                        <label for="location_{{ $record->id }}" class="form-label">Lokasi</label>
-                        <input id="location_{{ $record->id }}" type="text" name="location" class="form-control @error('location') is-invalid @enderror" value="{{ old('location', $record->location) }}">
-                        @error('location')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                    </div>
-                    @else
                     <div class="mb-3">
                         <label for="description_{{ $record->id }}" class="form-label">Deskripsi</label>
                         <textarea id="description_{{ $record->id }}" name="description" class="form-control @error('description') is-invalid @enderror" rows="3">{{ old('description', $record->description) }}</textarea>
                         @error('description')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
-                    @endif
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-soft" data-bs-dismiss="modal">Batal</button>

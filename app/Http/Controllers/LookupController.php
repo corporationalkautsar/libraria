@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Author;
 use App\Models\Category;
 use App\Models\Publisher;
-use App\Models\Shelf;
 use App\Support\ActivityLogger;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -17,12 +16,12 @@ class LookupController extends Controller
         'categories' => [
             'model' => Category::class,
             'table' => 'categories',
-            'title' => 'Kategori',
-            'singular' => 'Kategori',
-            'label' => 'Nama Kategori',
-            'icon' => 'tags',
+            'title' => 'Katalog',
+            'singular' => 'Katalog',
+            'label' => 'Nama Katalog',
+            'hint' => 'Contoh: Novel, Cerpen, Fiksi Ilmiah',
+            'icon' => 'library',
             'max' => 100,
-            'shelves' => false,
         ],
         'authors' => [
             'model' => Author::class,
@@ -30,9 +29,9 @@ class LookupController extends Controller
             'title' => 'Penulis',
             'singular' => 'Penulis',
             'label' => 'Nama Penulis',
+            'hint' => 'Opsional',
             'icon' => 'pen-line',
             'max' => 150,
-            'shelves' => false,
         ],
         'publishers' => [
             'model' => Publisher::class,
@@ -40,19 +39,9 @@ class LookupController extends Controller
             'title' => 'Penerbit',
             'singular' => 'Penerbit',
             'label' => 'Nama Penerbit',
+            'hint' => 'Opsional',
             'icon' => 'building-2',
             'max' => 150,
-            'shelves' => false,
-        ],
-        'shelves' => [
-            'model' => Shelf::class,
-            'table' => 'shelves',
-            'title' => 'Rak Buku',
-            'singular' => 'Rak',
-            'label' => 'Nama Rak',
-            'icon' => 'archive',
-            'max' => 100,
-            'shelves' => true,
         ],
     ];
 
@@ -71,25 +60,22 @@ class LookupController extends Controller
         $query = $model::query();
 
         if ($search = trim((string) $request->get('q'))) {
-            $query->where(function ($q) use ($search, $config) {
-                if ($config['shelves']) {
-                    $q->where('code', 'like', "%{$search}%")
-                        ->orWhere('name', 'like', "%{$search}%")
-                        ->orWhere('location', 'like', "%{$search}%");
-                } else {
-                    $q->where('name', 'like', "%{$search}%")
-                        ->orWhere('description', 'like', "%{$search}%");
-                }
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
             });
         }
 
-        $records = $query->orderBy($config['shelves'] ? 'code' : 'name')
-            ->paginate(15)
-            ->withQueryString();
+        $records = $query->orderBy('name')->paginate(15)->withQueryString();
 
         $counts = [];
+        $types = [];
         foreach (self::TYPES as $key => $item) {
             $counts[$key] = $item['model']::count();
+            $types[$key] = [
+                'title' => $item['title'],
+                'icon' => $item['icon'],
+            ];
         }
 
         return view('lookups.index', [
@@ -98,6 +84,7 @@ class LookupController extends Controller
             'title' => $config['title'],
             'config' => $config,
             'counts' => $counts,
+            'types' => $types,
             'search' => $search,
         ]);
     }
@@ -111,7 +98,7 @@ class LookupController extends Controller
 
         ActivityLogger::log(
             'Penambahan '.$config['singular'],
-            $config['singular'].' '.$this->recordLabel($data, $config).' ditambahkan.'
+            $config['singular'].' '.$this->recordLabel($data).' ditambahkan.'
         );
 
         return redirect()->route('lookups.index', $type)
@@ -128,7 +115,7 @@ class LookupController extends Controller
 
         ActivityLogger::log(
             'Perubahan '.$config['singular'],
-            $config['singular'].' '.$this->recordLabel($data, $config).' diperbarui.'
+            $config['singular'].' '.$this->recordLabel($data).' diperbarui.'
         );
 
         return redirect()->route('lookups.index', $type)
@@ -144,7 +131,7 @@ class LookupController extends Controller
             return back()->with('error', $config['singular'].' tidak dapat dihapus karena masih digunakan oleh buku.');
         }
 
-        $label = $config['shelves'] ? $record->code : $record->name;
+        $label = $record->name;
         $record->delete();
 
         ActivityLogger::log('Hapus '.$config['singular'], $config['singular'].' '.$label.' dihapus.');
@@ -155,39 +142,24 @@ class LookupController extends Controller
 
     private function validateData(Request $request, array $config, ?int $ignoreId = null): array
     {
-        if ($config['shelves']) {
-            $codeRule = Rule::unique('shelves', 'code');
-            if ($ignoreId) {
-                $codeRule->ignore($ignoreId);
-            }
-
-            $rules = [
-                'code' => ['required', 'string', 'max:30', $codeRule],
-                'name' => ['required', 'string', 'max:'.$config['max']],
-                'location' => ['nullable', 'string', 'max:150'],
-            ];
-        } else {
-            $nameRule = Rule::unique($config['table'], 'name');
-            if ($ignoreId) {
-                $nameRule->ignore($ignoreId);
-            }
-
-            $rules = [
-                'name' => ['required', 'string', 'max:'.$config['max'], $nameRule],
-                'description' => ['nullable', 'string'],
-            ];
+        $nameRule = Rule::unique($config['table'], 'name');
+        if ($ignoreId) {
+            $nameRule->ignore($ignoreId);
         }
+
+        $rules = [
+            'name' => ['required', 'string', 'max:'.$config['max'], $nameRule],
+            'description' => ['nullable', 'string'],
+        ];
 
         return $request->validate($rules, [
             'name.required' => $config['label'].' wajib diisi.',
             'name.unique' => $config['singular'].' dengan nama tersebut sudah ada.',
-            'code.required' => 'Kode rak wajib diisi.',
-            'code.unique' => 'Kode rak tersebut sudah digunakan.',
         ]);
     }
 
-    private function recordLabel(array $data, array $config): string
+    private function recordLabel(array $data): string
     {
-        return (string) ($data['name'] ?? $data['code'] ?? '') ?: '-';
+        return (string) ($data['name'] ?? '') ?: '-';
     }
 }

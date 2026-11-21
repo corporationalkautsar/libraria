@@ -6,7 +6,6 @@ use App\Models\Author;
 use App\Models\Book;
 use App\Models\Category;
 use App\Models\Publisher;
-use App\Models\Shelf;
 use App\Support\ActivityLogger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -24,13 +23,12 @@ class BookController extends Controller
             'categories' => Category::orderBy('name')->get(),
             'authors' => Author::orderBy('name')->get(),
             'publishers' => Publisher::orderBy('name')->get(),
-            'shelves' => Shelf::orderBy('code')->get(),
         ];
     }
 
     public function index(Request $request)
     {
-        $query = Book::with(['author', 'publisher', 'category', 'shelf']);
+        $query = Book::with(['author', 'publisher', 'category']);
 
         if ($search = trim((string) $request->get('q'))) {
             $query->where(function ($q) use ($search) {
@@ -105,7 +103,7 @@ class BookController extends Controller
 
     public function show(Book $book)
     {
-        $book->load(['author', 'publisher', 'category', 'shelf']);
+        $book->load(['author', 'publisher', 'category']);
 
         $loanHistory = $book->loanDetails()
             ->with('loan.member')
@@ -186,8 +184,6 @@ class BookController extends Controller
             'author_id' => ['required', 'exists:authors,id'],
             'publisher_id' => ['required', 'exists:publishers,id'],
             'category_id' => ['required', 'exists:categories,id'],
-            'shelf_id' => ['required', 'exists:shelves,id'],
-            'shelf_number' => ['nullable', 'string', 'max:20'],
             'year' => ['required', 'integer', 'min:1900', 'max:'.(now()->year + 1)],
             'stock' => ['required', 'integer', 'min:1'],
             'description' => ['nullable', 'string'],
@@ -208,8 +204,7 @@ class BookController extends Controller
             'title.required' => 'Judul buku wajib diisi.',
             'author_id.required' => 'Penulis wajib dipilih.',
             'publisher_id.required' => 'Penerbit wajib dipilih.',
-            'category_id.required' => 'Kategori wajib dipilih.',
-            'shelf_id.required' => 'Rak buku wajib dipilih.',
+            'category_id.required' => 'Katalog wajib dipilih.',
             'year.required' => 'Tahun terbit wajib diisi.',
             'year.min' => 'Tahun terbit minimal 1900.',
             'stock.required' => 'Jumlah stok wajib diisi.',

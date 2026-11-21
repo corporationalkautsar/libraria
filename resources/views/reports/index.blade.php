@@ -46,9 +46,9 @@
             </select>
         </div>
         <div class="col-md-2">
-            <label for="kategori">Kategori</label>
+            <label for="kategori">Katalog</label>
             <select name="kategori" id="kategori" class="form-select">
-                <option value="">Semua Kategori</option>
+                <option value="">Semua Katalog</option>
                 @foreach($options['kategori'] as $category)
                     <option value="{{ $category->id }}" @selected($filters['kategori'] === (string) $category->id)>{{ $category->name }}</option>
                 @endforeach
@@ -66,7 +66,7 @@
     <div class="d-flex gap-2 mt-3 flex-wrap">
         <button type="submit" class="btn btn-teal">{!! icon('filter', 15) !!} Terapkan</button>
         <a href="{{ route('reports.index') }}" class="btn btn-soft">{!! icon('rotate-ccw', 15) !!} Reset</a>
-        <span class="ms-auto align-self-center cell-secondary">Filter berlaku pada transaksi; kategori juga menyaring data koleksi.</span>
+        <span class="ms-auto align-self-center cell-secondary">Filter berlaku pada transaksi; katalog juga menyaring data koleksi.</span>
     </div>
 </form>
 
@@ -93,7 +93,7 @@
     </div>
     <div class="col-xl-4">
         <div class="card-soft h-100">
-            <div class="card-head"><h3 class="card-title">Distribusi Koleksi per Kategori</h3></div>
+            <div class="card-head"><h3 class="card-title">Distribusi Koleksi per Katalog</h3></div>
             <div class="card-body-soft"><div class="chart-box"><canvas id="reportCategoryChart"></canvas></div></div>
         </div>
     </div>
@@ -110,19 +110,19 @@
             <div class="col-md-3"><div class="quick-action"><div class="qa-icon">{!! icon('book-open', 17) !!}</div><div><div class="qa-title">{{ $buku['borrowed'] }}</div><div class="qa-desc">Eksemplar dipinjam</div></div></div></div>
             <div class="col-md-3"><div class="quick-action"><div class="qa-icon">{!! icon('book-x', 17) !!}</div><div><div class="qa-title">{{ $buku['out_of_stock'] }}</div><div class="qa-desc">Stok habis</div></div></div></div>
             <div class="col-md-3"><div class="quick-action"><div class="qa-icon">{!! icon('circle-slash', 17) !!}</div><div><div class="qa-title">{{ $buku['inactive'] }}</div><div class="qa-desc">Tidak aktif</div></div></div></div>
-            <div class="col-md-3"><div class="quick-action"><div class="qa-icon">{!! icon('tags', 17) !!}</div><div><div class="qa-title">{{ $buku['per_category']->count() }}</div><div class="qa-desc">Kategori tercatat</div></div></div></div>
+            <div class="col-md-3"><div class="quick-action"><div class="qa-icon">{!! icon('tags', 17) !!}</div><div><div class="qa-title">{{ $buku['per_category']->count() }}</div><div class="qa-desc">Katalog tercatat</div></div></div></div>
         </div>
     </div>
     <div class="row g-0">
         <div class="col-lg-4">
-            <div class="card-head"><h3 class="card-title">Per Kategori</h3></div>
+            <div class="card-head"><h3 class="card-title">Per Katalog</h3></div>
             <div class="table-wrap">
                 <table class="table-soft">
-                    <thead><tr><th>Kategori</th><th>Judul</th><th>Eksemplar</th><th>Tersedia</th></tr></thead>
+                    <thead><tr><th>Katalog</th><th>Judul</th><th>Eksemplar</th><th>Tersedia</th></tr></thead>
                     <tbody>
                         @forelse($buku['per_category'] as $item)
                         <tr><td class="cell-primary">{{ $item->name }}</td><td>{{ (int) $item->books_count }}</td><td>{{ (int) $item->total_stock }}</td><td>{{ (int) $item->total_available }}</td></tr>
-                        @empty<tr><td colspan="4" class="table-empty">Belum ada kategori.</td></tr>@endforelse
+                        @empty<tr><td colspan="4" class="table-empty">Belum ada katalog.</td></tr>@endforelse
                     </tbody>
                 </table>
             </div>

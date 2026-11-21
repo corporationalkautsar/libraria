@@ -44,29 +44,15 @@
                             @error('publisher_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                         <div class="col-md-4">
-                            <label for="category_id" class="form-label">Kategori <span class="text-danger">*</span></label>
+                            <label for="category_id" class="form-label">Katalog <span class="text-danger">*</span></label>
                             <select id="category_id" name="category_id" class="form-select @error('category_id') is-invalid @enderror" required>
-                                <option value="">— Pilih Kategori —</option>
+                                <option value="">— Pilih Katalog —</option>
                                 @foreach($categories as $category)
                                     <option value="{{ $category->id }}" @selected(old('category_id') == $category->id)>{{ $category->name }}</option>
                                 @endforeach
                             </select>
                             @error('category_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                        </div>
-                        <div class="col-md-4">
-                            <label for="shelf_id" class="form-label">Rak Buku <span class="text-danger">*</span></label>
-                            <select id="shelf_id" name="shelf_id" class="form-select @error('shelf_id') is-invalid @enderror" required>
-                                <option value="">— Pilih Rak —</option>
-                                @foreach($shelves as $shelf)
-                                    <option value="{{ $shelf->id }}" @selected(old('shelf_id') == $shelf->id)>{{ $shelf->code }} — {{ $shelf->name }}</option>
-                                @endforeach
-                            </select>
-                            @error('shelf_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                        </div>
-                        <div class="col-md-4">
-                            <label for="shelf_number" class="form-label">Nomor Rak</label>
-                            <input id="shelf_number" type="text" name="shelf_number" class="form-control @error('shelf_number') is-invalid @enderror" value="{{ old('shelf_number') }}" placeholder="Contoh: A-12">
-                            @error('shelf_number')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                            <div class="form-text">Contoh: Novel, Cerpen, Sejarah.</div>
                         </div>
                         <div class="col-md-4">
                             <label for="year" class="form-label">Tahun Terbit <span class="text-danger">*</span></label>

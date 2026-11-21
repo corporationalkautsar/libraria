@@ -74,7 +74,7 @@
                     <input type="hidden" name="member_id" value="{{ $member->id }}">
                     <div class="table-wrap" style="max-height:400px;overflow-y:auto">
                         <table class="table-soft">
-                            <thead><tr><th style="width:36px"></th><th>Judul Buku</th><th>Penulis</th><th>Kategori</th><th>Tersedia</th></tr></thead>
+                            <thead><tr><th style="width:36px"></th><th>Judul Buku</th><th>Penulis</th><th>Katalog</th><th>Tersedia</th></tr></thead>
                             <tbody>
                                 @forelse($books as $book)
                                 <tr>

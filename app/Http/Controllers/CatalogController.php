@@ -12,7 +12,7 @@ class CatalogController extends Controller
 
     public function index(Request $request)
     {
-        $query = Book::with(['author', 'publisher', 'category', 'shelf']);
+        $query = Book::with(['author', 'publisher', 'category']);
 
         if ($search = trim((string) $request->get('q'))) {
             $query->where(function ($q) use ($search) {
@@ -38,14 +38,15 @@ class CatalogController extends Controller
         $direction = $request->get('direction') === 'desc' ? 'desc' : 'asc';
 
         $books = $query->orderBy($sort, $direction)->paginate(15)->withQueryString();
-        $categories = Category::orderBy('name')->get();
+        $catalogs = Category::withCount('books')->orderBy('name')->get();
+        $totalBooks = Book::count();
 
-        return view('catalog.index', compact('books', 'categories'));
+        return view('catalog.index', compact('books', 'catalogs', 'totalBooks'));
     }
 
     public function show(Book $book)
     {
-        $book->load(['author', 'publisher', 'category', 'shelf']);
+        $book->load(['author', 'publisher', 'category']);
 
         $related = Book::where('category_id', $book->category_id)
             ->where('id', '!=', $book->id)

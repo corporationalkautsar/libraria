@@ -22,7 +22,7 @@
             <input id="q" type="text" name="q" class="form-control" placeholder="Judul, ISBN, atau kode buku" value="{{ request('q') }}">
         </div>
         <div class="col-6 col-md-3 col-lg-2">
-            <label for="category_id">Kategori</label>
+            <label for="category_id">Katalog</label>
             <select id="category_id" name="category_id" class="form-select">
                 <option value="">Semua</option>
                 @foreach($categories as $category)
@@ -95,8 +95,7 @@
                     <th>Kode / ISBN</th>
                     <th>{!! sort_link('Judul Buku', 'title') !!}</th>
                     <th>Penulis</th>
-                    <th>Kategori</th>
-                    <th>Rak</th>
+                    <th>Katalog</th>
                     <th>{!! sort_link('Tahun', 'year') !!}</th>
                     <th>{!! sort_link('Stok', 'stock') !!}</th>
                     <th>{!! sort_link('Tersedia', 'available') !!}</th>
@@ -125,7 +124,6 @@
                     </td>
                     <td>{{ $book->author?->name ?? '-' }}</td>
                     <td>{{ $book->category?->name ?? '-' }}</td>
-                    <td class="nowrap">{{ $book->shelf?->code ?? '-' }}{{ $book->shelf_number ? ' / '.$book->shelf_number : '' }}</td>
                     <td>{{ $book->year }}</td>
                     <td class="text-center">{{ $book->stock }}</td>
                     <td class="text-center">
@@ -145,7 +143,7 @@
                     </td>
                 </tr>
                 @empty
-                <tr><td colspan="12" class="table-empty">Belum ada buku yang cocok dengan pencarian Anda.</td></tr>
+                <tr><td colspan="11" class="table-empty">Belum ada buku yang cocok dengan pencarian Anda.</td></tr>
                 @endforelse
             </tbody>
         </table>

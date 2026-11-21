@@ -89,13 +89,13 @@
     </tr>
 </table>
 
-<h3 class="subsection">Buku per Kategori</h3>
+<h3 class="subsection">Buku per Katalog</h3>
 <table class="data">
-    <thead><tr><th>Kategori</th><th class="num">Judul</th><th class="num">Eksemplar</th><th class="num">Tersedia</th></tr></thead>
+    <thead><tr><th>Katalog</th><th class="num">Judul</th><th class="num">Eksemplar</th><th class="num">Tersedia</th></tr></thead>
     <tbody>
         @forelse($buku['per_category'] as $item)
         <tr><td>{{ $item->name }}</td><td class="num">{{ (int) $item->books_count }}</td><td class="num">{{ (int) $item->total_stock }}</td><td class="num">{{ (int) $item->total_available }}</td></tr>
-        @empty<tr><td colspan="4" class="empty">Belum ada data kategori.</td></tr>@endforelse
+        @empty<tr><td colspan="4" class="empty">Belum ada data katalog.</td></tr>@endforelse
     </tbody>
 </table>
 

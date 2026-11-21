@@ -52,7 +52,7 @@
     <div class="col-6 col-md-4 col-xl-3"><x-stat-card label="Total Eksemplar" :value="$stats['total_books']" icon="book-open" tone="teal" foot="Seluruh stok buku" /></div>
     <div class="col-6 col-md-4 col-xl-3"><x-stat-card label="Judul Buku" :value="$stats['total_titles']" icon="library" tone="blue" foot="Judul berbeda" /></div>
     <div class="col-6 col-md-4 col-xl-3"><x-stat-card label="Total Anggota" :value="$stats['total_members']" icon="users" tone="purple" foot="Terdaftar" /></div>
-    <div class="col-6 col-md-4 col-xl-3"><x-stat-card label="Kategori" :value="$stats['total_categories']" icon="tags" tone="amber" foot="Koleksi kategori" /></div>
+    <div class="col-6 col-md-4 col-xl-3"><x-stat-card label="Katalog" :value="$stats['total_categories']" icon="library" tone="amber" foot="Kumpulan buku sejenis" /></div>
     <div class="col-6 col-md-4 col-xl-3"><x-stat-card label="Total Peminjaman" :value="$stats['total_loans']" icon="book-marked" tone="indigo" foot="Sepanjang waktu" :delta="($loanDelta >= 0 ? '+' : '').$loanDelta.'%'" :direction="$loanDelta < 0 ? 'down' : 'up'" :series="$monthlyLoans" /></div>
     <div class="col-6 col-md-4 col-xl-3"><x-stat-card label="Sedang Dipinjam" :value="$stats['borrowed']" icon="book-open-check" tone="teal" foot="Belum dikembalikan" :series="$monthlyLoans" /></div>
     <div class="col-6 col-md-4 col-xl-3"><x-stat-card label="Buku Terlambat" :value="$stats['overdue']" icon="triangle-alert" tone="red" foot="Perlu ditindaklanjuti" /></div>
@@ -77,7 +77,7 @@
             <div class="panel-head">
                 <div class="panel-heading">
                     <span class="panel-icon">{!! icon('chart-pie', 17) !!}</span>
-                    <div><h3 class="panel-title">Kategori Terpopuler</h3><div class="panel-sub">Berdasarkan jumlah peminjaman</div></div>
+                    <div><h3 class="panel-title">Katalog Terpopuler</h3><div class="panel-sub">Berdasarkan jumlah peminjaman</div></div>
                 </div>
             </div>
             <div class="panel-body"><div class="chart-box-v2 sm"><canvas id="categoryChart"></canvas></div></div>

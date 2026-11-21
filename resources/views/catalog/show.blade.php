@@ -37,10 +37,9 @@
                 <div class="row g-3">
                     <div class="col-md-6"><div class="cell-secondary">Penulis</div><div class="cell-primary">{{ $book->author?->name ?? '-' }}</div></div>
                     <div class="col-md-6"><div class="cell-secondary">Penerbit</div><div class="cell-primary">{{ $book->publisher?->name ?? '-' }}</div></div>
-                    <div class="col-md-6"><div class="cell-secondary">Kategori</div><div class="cell-primary">{{ $book->category?->name ?? '-' }}</div></div>
+                    <div class="col-md-6"><div class="cell-secondary">Katalog</div><div class="cell-primary">{{ $book->category?->name ?? '-' }}</div></div>
                     <div class="col-md-6"><div class="cell-secondary">Tahun Terbit</div><div class="cell-primary">{{ $book->year }}</div></div>
                     <div class="col-md-6"><div class="cell-secondary">ISBN</div><div class="cell-primary">{{ $book->isbn ?: '—' }}</div></div>
-                    <div class="col-md-6"><div class="cell-secondary">Rak</div><div class="cell-primary">{{ $book->shelf?->code ?? '-' }} — {{ $book->shelf?->name ?? '-' }} {{ $book->shelf_number ? '/ '.$book->shelf_number : '' }}</div></div>
                     <div class="col-12"><div class="cell-secondary">Deskripsi / Sinopsis</div><div class="mt-1">{{ $book->description ?: 'Tidak ada deskripsi.' }}</div></div>
                 </div>
             </div>
@@ -58,7 +57,7 @@
                         </div>
                         <a href="{{ route('catalog.show', $item) }}" class="btn btn-soft btn-sm">Detail</a>
                     </li>
-                    @empty<li class="table-empty">Belum ada buku lain dalam kategori ini.</li>@endforelse
+                    @empty<li class="table-empty">Belum ada buku lain dalam katalog ini.</li>@endforelse
                 </ul>
             </div>
         </div>
