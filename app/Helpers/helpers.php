@@ -26,6 +26,17 @@ if (! function_exists('tanggal')) {
     }
 }
 
+if (! function_exists('header_alerts')) {
+    function header_alerts(): array
+    {
+        return [
+            'overdue' => \App\Models\Loan::where('status', 'terlambat')->count(),
+            'due_today' => \App\Models\Loan::whereIn('status', ['dipinjam', 'terlambat'])
+                ->whereDate('due_date', today())->count(),
+        ];
+    }
+}
+
 if (! function_exists('icon')) {
     function icon(string $name, int $size = 18, string $class = ''): string
     {

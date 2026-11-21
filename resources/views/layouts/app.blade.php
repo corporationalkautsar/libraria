@@ -9,9 +9,11 @@
     <link rel="icon" href="{{ asset('vendor/icons/library-big.svg') }}">
     <link rel="stylesheet" href="{{ asset('vendor/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
     @stack('styles')
 </head>
-<body>
+<body class="admin-page">
+@php($alerts = header_alerts())
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
 <aside class="sidebar" id="sidebar">
@@ -80,10 +82,10 @@
 
     <div class="sidebar-footer">
         <div class="d-flex align-items-center gap-2">
-            {!! icon('shield-check', 15) !!}
-            <span>Mode Offline · Lokal</span>
+            <span class="live-dot"></span>
+            <span>Sistem aktif · Mode Offline</span>
         </div>
-        <div class="mt-1">v1.0 · &copy; {{ date('Y') }} Libraria</div>
+        <div class="mt-1">{!! icon('shield-check', 12) !!} v1.0 · &copy; {{ date('Y') }} Libraria</div>
     </div>
 </aside>
 
@@ -101,7 +103,39 @@
                 <input type="search" name="q" value="{{ request('q') }}" placeholder="Cari buku, ISBN, penulis..." aria-label="Cari buku">
                 <button type="submit" aria-label="Cari">{!! icon('search', 15) !!}</button>
             </form>
-            <span class="topbar-chip">{!! icon('calendar-days', 15) !!} {{ tanggal(now()) }}</span>
+            <span class="topbar-chip d-none d-xl-inline-flex">{!! icon('calendar-days', 15) !!} {{ tanggal(now()) }}</span>
+            <span class="clock-chip d-none d-lg-inline-flex" id="adminClock">{!! icon('clock', 15) !!} <span>--:--:--</span></span>
+
+            <div class="theme-switch d-none d-md-inline-flex" role="group" aria-label="Tema tampilan">
+                @foreach(['coffee' => 'Kopi', 'midnight' => 'Malam', 'emerald' => 'Hijau', 'violet' => 'Ungu'] as $key => $label)
+                    <button type="button" class="theme-dot" data-theme="{{ $key }}" title="Tema {{ $label }}" aria-label="Tema {{ $label }}" aria-pressed="false"></button>
+                @endforeach
+            </div>
+
+            <div class="dropdown notification-wrap">
+                <a href="#" class="notif-trigger" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-label="Notifikasi">
+                    {!! icon('bell', 17) !!}
+                    @if($alerts['overdue'] + $alerts['due_today'] > 0)
+                        <span class="notif-count">{{ $alerts['overdue'] + $alerts['due_today'] }}</span>
+                    @endif
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end notif-menu">
+                    <li class="notif-head"><strong>Notifikasi</strong><span class="cell-secondary">{{ $alerts['overdue'] + $alerts['due_today'] }} item</span></li>
+                    <li>
+                        <a class="notif-item tone-red" href="{{ route('loans.index') }}">
+                            <span class="notif-ico">{!! icon('triangle-alert', 15) !!}</span>
+                            <span><strong>{{ $alerts['overdue'] }} buku terlambat</strong><small>Perlu ditindaklanjuti segera</small></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="notif-item tone-amber" href="{{ route('loans.index') }}">
+                            <span class="notif-ico">{!! icon('clock', 15) !!}</span>
+                            <span><strong>{{ $alerts['due_today'] }} jatuh tempo hari ini</strong><small>Pengecekan pengembalian</small></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
             <div class="dropdown">
                 <a href="#" class="user-menu dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="true">
                     <span class="avatar">{{ strtoupper(Str::charAt(auth()->user()->name, 0)) }}</span>
@@ -176,6 +210,7 @@
         });
     })();
 </script>
+<script src="{{ asset('js/admin-ui.js') }}"></script>
 @stack('scripts')
 </body>
 </html>
