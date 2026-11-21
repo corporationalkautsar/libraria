@@ -15,7 +15,7 @@
     <div class="d-flex gap-2 flex-wrap">
         <a href="{{ route('reports.print', $exportParams) }}" class="btn btn-outline-teal">{!! icon('printer', 16) !!} Cetak</a>
         <a href="{{ route('reports.pdf', $exportParams) }}" class="btn btn-outline-teal">{!! icon('file-text', 16) !!} PDF</a>
-        <a href="{{ route('reports.excel', $exportParams) }}" class="btn btn-teal">{!! icon('file-spreadsheet', 16) !!} Excel</a>
+        <a href="{{ route('reports.excel', $exportParams) }}" class="btn btn-teal" title="Unduh buku kerja XLSX bergaya dengan 8 tab dan grafik">{!! icon('file-spreadsheet', 16) !!} Excel .xlsx</a>
     </div>
 </div>
 
